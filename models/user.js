@@ -33,7 +33,7 @@ module.exports = (sequelize, DataTypes) => {
             msg: "Please enter your email",
           },
           notEmpty: { msg: "Please enter your email" },
-          isEmail: "Invalid email format",
+          isEmail: { msg: "Invalid email format" },
         },
       },
       password: {
