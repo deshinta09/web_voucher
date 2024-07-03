@@ -13,7 +13,7 @@ async function authentication(req, res, next) {
       throw { name: "Unauthorized", message: "The access token is invalid" };
     }
 
-    let userLogin = await User.findByPk(checkToken);
+    let userLogin = await User.findByPk(checkToken.id);
     if (!userLogin) {
       throw { name: "Unauthorized", message: "The access token is invalid" };
     }
