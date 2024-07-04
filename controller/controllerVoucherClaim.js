@@ -5,7 +5,7 @@ class ControllerVoucherClaim {
   static async getVoucherClaim(req, res, next) {
     try {
       let { filter } = req.query;
-      console.log(req.query, "<<< query");
+      // console.log(req.query, "<<< query");
       let option = {
         where: { id_user: req.user.id },
         include: {
@@ -36,6 +36,7 @@ class ControllerVoucherClaim {
   static async removeVoucherClaim(req, res, next) {
     try {
       let { id } = req.params;
+      // console.log(id, "id delete");
       let voucherClaim = await Voucher_Claim.findByPk(id);
       if (!voucherClaim) {
         throw { name: "Not Found", message: "Voucher not found" };
