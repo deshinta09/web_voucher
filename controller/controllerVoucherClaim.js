@@ -1,11 +1,19 @@
-const { Voucher_Claim } = require("../models/");
+const { Op } = require("sequelize");
+const { Voucher_Claim, Voucher } = require("../models/");
 
 class ControllerVoucherClaim {
   static async getVoucherClaim(req, res, next) {
     try {
-      let voucherClaim = await Voucher_Claim.findAll({
+      let { filter } = req.query;
+      console.log(req.query, "<<< query");
+      let option = {
         where: { id_user: req.user.id },
-      });
+        include: {
+          model: Voucher,
+        },
+      };
+      filter ? (option.include.where = { category: { [Op.eq]: filter } }) : "";
+      let voucherClaim = await Voucher_Claim.findAll(option);
       res.status(200).json(voucherClaim);
     } catch (error) {
       next(error);
@@ -33,11 +41,9 @@ class ControllerVoucherClaim {
         throw { name: "Not Found", message: "Voucher not found" };
       }
       await Voucher_Claim.destroy({ where: { id } });
-      res
-        .status(200)
-        .json({
-          message: `Success delete voucher claim id ${voucherClaim.id}`,
-        });
+      res.status(200).json({
+        message: `Success delete voucher claim id ${voucherClaim.id}`,
+      });
     } catch (error) {
       next(error);
     }
