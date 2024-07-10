@@ -16,7 +16,7 @@ class ControllerVoucher {
       let option = {
         where: claimId,
       };
-      filter ? (option.where.category = { [Op.eq]: filter }) : "";
+      filter ? (option.where.category = { [Op.iLike]: `%${filter}%` }) : "";
       let vouchers = await Voucher.findAll(option);
       res.status(200).json(vouchers);
     } catch (error) {
