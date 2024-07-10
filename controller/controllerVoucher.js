@@ -29,10 +29,9 @@ class ControllerVoucher {
       let categories = [];
       let voucherId = [];
       // mencari voucher yang telah di claim dari user yang sedang login
-      let voucherClaim = await Voucher_Claim.findAll(
-        { attributes: ["id_voucher"] },
-        { where: { id_user: req.user.id } }
-      );
+      let voucherClaim = await Voucher_Claim.findAll({
+        where: { id_user: req.user.id },
+      });
       // ambil id voucher yang telah di claim user yang sedang login
       voucherClaim.forEach((el) => {
         voucherId.push(el.id_voucher);
@@ -45,9 +44,8 @@ class ControllerVoucher {
       voucher.forEach((el) => {
         let index = Infinity;
         categories.forEach((n, i) => {
-          n.name === el.category ? (index = i) : "";
+          n.category === el.category ? (index = i) : "";
         });
-        // console.log(categories[index], "<<< cate yg sama");
         categories[index]
           ? categories[index].num++
           : categories.push({ category: el.category, num: 1 });
@@ -60,6 +58,7 @@ class ControllerVoucher {
 
   static async categoriesUser(req, res, next) {
     try {
+      let categories = [];
       let voucherId = [];
       // mencari voucher yang telah di claim dari user yang sedang login
       let voucherClaim = await Voucher_Claim.findAll({
